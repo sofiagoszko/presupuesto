@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,14 +8,11 @@
 </head>
 <body onload="cargarApp()">
 
-    <!--CABECERO-->
     <div class="cabecero">
-        <!--PRESUPUESTO-->
         <div class="presupuesto">
             <div class="presupuesto_titulo">Presupuesto disponible</div>
             <div class="presupuesto_valor" id="presupuesto"></div>
 
-            <!--INGRESOS-->
             <div class="presupuesto_ingreso limpiarEstilos">
                 <div class="presupuesto_ingreso--texto">Ingresos</div>
                 <div class="derecha limpiarEstilos">
@@ -24,7 +21,6 @@
                 </div>
             </div>
 
-            <!--EGRESOS-->
             <div class="presupuesto_egreso limpiarEstilos">
                 <div class="presupuesto_egreso--texto">Egresos</div>
                 <div class="derecha limpiarEstilos">
@@ -35,20 +31,16 @@
         </div>
     </div>
 
-    <!--FORMULARIO DE INGRESO-->
     <form id="forma" onsubmit="return false;">
         <div class="agregar">
             <div class="agregar_contenedor">
-                <!--selecciona si es ingreso o egreso-->
                 <select class="agregar_tipo" id="tipo">
                     <option value="ingreso" selected>+</option>
                     <option value="egreso">-</option>
                 </select>
 
-                <!--ingresa la descripcion-->
                 <input type="text" class="agregar_descripcion" id="descripcion" placeholder="Ingrese descripción"/>
 
-                <!--ingresa el valor-->
                 <input type="number" class="agregar_valor" id="valor" placeholder="Importe" step="any"/>
                 <button class="agregar_btn" onclick="agregarDato()">
                     <ion-icon name="checkmark-circle-outline"></ion-icon>
@@ -57,17 +49,13 @@
         </div>
     </form>
 
-
-    <!--LISTADO INGRESOS Y EGRESOS-->
     <div class="contenedor limpiarEstilos">
 
-        <!--LISTA INGRESOS-->
         <div class="ingreso">
             <h2 class="ingreso_titulo">Ingresos</h2>
             <div id="lista-ingresos"></div>
         </div>
-
-        <!--LISTA EGRESOS-->
+        
         <div class="egreso">
             <h2 class="egreso_titulo">Egresos</h2>
             <div id="lista-egresos"></div>
@@ -80,7 +68,7 @@
     <script src="./js/Ingreso.js"></script>
     <script src="./js/Egreso.js"></script>
     <script src="./js/script.js"></script>
-    <script src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script><script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>
 </html>
