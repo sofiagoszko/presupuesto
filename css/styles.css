@@ -25,8 +25,6 @@ body{
 
 .cabecero{
     height: 40vh;
-    background-size: cover;
-    background-position: center;
     position: relative;
     width: 100%;
     padding-top: 150px;
@@ -34,7 +32,9 @@ body{
     color: #fff;
     background: url(fondo.png), #7b4397;
     background: url(fondo.png), -webkit-gradient(linear, right top, left top, from(#7b4397), to(#dc2430));
-    background: url(fondo.png), linear-gradient(to left, #7b4397, #dc2430)
+    background: url(fondo.png), linear-gradient(to left, #7b4397, #dc2430);
+    background-size: cover;
+    background-position: center;
 }
 
 .presupuesto {
@@ -93,7 +93,7 @@ body{
 .presupuesto_ingreso--porcentaje,
 .presupuesto_egreso--porcentaje {
     float: left;
-    width: 34px;
+    width: 50px;
     font-size: 11px;
     padding: 3px 0;
     margin-left: 10px;
@@ -167,6 +167,7 @@ body{
 }
 
 .agregar_btn:focus { outline: none; }
+.agregar_btn:focus-visible { outline: 2px solid #28B9B5; }
 
 .contenedor {
     width: 860px;
@@ -244,15 +245,45 @@ h2 {
     background: none;
     border: none;
     cursor: pointer;
-    display: inline-block;
     vertical-align: middle;
     line-height: 1;
     display: none;
 }
 
 .elemento_eliminar--btn:focus { outline: none; }
+.elemento_eliminar--btn:focus-visible { outline: 2px solid #28B9B5; }
 .elemento_eliminar--btn:active { transform: translateY(2px); }
 
 .elemento:hover .elemento_eliminar--btn { display: block; }
 .elemento:hover .elemento_valor { transform: translateX(-20px); }
 .elemento:hover .elemento_porcentaje { transform: translateX(-20px); }
+
+@media (hover: none) {
+    .elemento_eliminar--btn { display: block; }
+}
+
+@media (max-width: 900px) {
+    .contenedor {
+        width: auto;
+        max-width: 860px;
+        margin: 40px 16px;
+    }
+
+    .ingreso,
+    .egreso {
+        float: none;
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 40px;
+    }
+
+    .agregar_descripcion {
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    .presupuesto {
+        width: 90%;
+        max-width: 350px;
+    }
+}
