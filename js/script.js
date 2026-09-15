@@ -9,14 +9,12 @@ let egresos = [
 ];
 
 
-/*cuando se carga la pagina*/
 let cargarApp = () => {
     cargarCabecero();
     cargarIngresos();
     cargarEgresos();
 }
 
-/*calcula el total de ingresos hasta el momento*/
 let totalIngresos = () => {
     let totalIngreso = 0;
     for(let ingreso of ingresos){
@@ -25,7 +23,6 @@ let totalIngresos = () => {
     return totalIngreso;
 }
 
-/*calcula el total de egresos hasta el momento*/
 let totalEgresos = () => {
     let totalEgreso = 0;
     for(let egreso of egresos){
@@ -34,31 +31,34 @@ let totalEgresos = () => {
     return totalEgreso;
 }
 
-/*actualiza los valores html*/
+
 let cargarCabecero = () => {
-    let presupuesto = totalIngresos() - totalEgresos();
-    let porcentajeEgreso = [totalEgresos()/totalIngresos()];
+    let totalIngreso = totalIngresos();
+    let totalEgreso = totalEgresos();
+    let presupuesto = totalIngreso - totalEgreso;
+    let porcentajeEgreso = totalIngreso > 0 ? totalEgreso / totalIngreso : 0;
     document.getElementById("presupuesto").innerHTML = formatoMoneda(presupuesto);
-    document.getElementById("ingresos").innerHTML = `+ ${formatoMoneda(totalIngresos())}`;
-    document.getElementById("egresos").innerHTML = `- ${formatoMoneda(totalEgresos())}`;
-    if(totalIngresos() > 0){
-        document.getElementById("porcentaje_egreso").innerHTML = formatoPorcentaje(porcentajeEgreso);}
-    else{
-        document.getElementById("porcentaje_egreso").innerHTML = formatoPorcentaje(0);
-    }    
+    document.getElementById("ingresos").innerHTML = `+ ${formatoMoneda(totalIngreso)}`;
+    document.getElementById("egresos").innerHTML = `- ${formatoMoneda(totalEgreso)}`;
+    document.getElementById("porcentaje_egreso").innerHTML = formatoPorcentaje(porcentajeEgreso);
 }
 
-/*para darle formato a los numeros*/
+
 const formatoMoneda = (valor) =>{
     return  valor.toLocaleString('es-AR', {style:"currency", currency:"ARS", minimumFractionDigits:2});
 }
 
-/*para darle formato a los porcentajes*/
+
 const formatoPorcentaje = (valor) =>{
     return valor.toLocaleString('es-AR', {style:'percent', minimumFractionDigits:2});
 }
 
-/*lista los ingresos*/
+const escaparHTML = (texto) =>{
+    let div = document.createElement("div");
+    div.textContent = texto;
+    return div.innerHTML;
+}
+
 const cargarIngresos = () =>{
     let ingresosHTML = "";
     for(let ingreso of ingresos){
@@ -67,16 +67,16 @@ const cargarIngresos = () =>{
     document.getElementById("lista-ingresos").innerHTML = ingresosHTML;
 }
 
-/*crea cada ingreso para despues sumarlo al listado total*/
+
 const crearIngresoHTML = (ingreso) => {
     let ingresoHTML = `
         <div class="elemento limpiarEstilos">
-            <div class="elemento_descripcion">${ingreso.descripcion}</div>
-            <div class="derecha limpiarEstulos">
+            <div class="elemento_descripcion">${escaparHTML(ingreso.descripcion)}</div>
+            <div class="derecha limpiarEstilos">
                 <div class="elemento_valor">+ ${formatoMoneda(ingreso.valor)}</div>
                 <div class="elemento_eliminar">
-                    <button class="elemento_eliminar--btn">
-                        <ion-icon name="close-circle-outline" onclick="eliminarIngreso(${ingreso.id})"></ion-icon>
+                    <button type="button" class="elemento_eliminar--btn" onclick="eliminarIngreso(${ingreso.id})">
+                        <ion-icon name="close-circle-outline"></ion-icon>
                     </button>
                 </div>
             </div>
@@ -85,7 +85,6 @@ const crearIngresoHTML = (ingreso) => {
     return ingresoHTML;
 }
 
-/*lista los egresos*/
 const cargarEgresos = () =>{
     let egresosHTML = "";
     for(let egreso of egresos){
@@ -94,18 +93,18 @@ const cargarEgresos = () =>{
     document.getElementById("lista-egresos").innerHTML = egresosHTML;
 }
 
-/*crea cada ingreso para despues sumarlo al listado total*/
 const crearEgresoHTML = (egreso) => {
-    let porcentajeEgreso = [egreso.valor/totalEgresos()];
+    let totalEgreso = totalEgresos();
+    let porcentajeEgreso = totalEgreso > 0 ? egreso.valor / totalEgreso : 0;
     let egresoHTML = `
         <div class="elemento limpiarEstilos">
-            <div class="elemento_descripcion">${egreso.descripcion}</div>
+            <div class="elemento_descripcion">${escaparHTML(egreso.descripcion)}</div>
             <div class="derecha limpiarEstilos">
                 <div class="elemento_valor">- ${formatoMoneda(egreso.valor)}</div>
                 <div class="elemento_porcentaje">${formatoPorcentaje(porcentajeEgreso)}</div>
                 <div class="elemento_eliminar">
-                    <button class="elemento_eliminar--btn">
-                        <ion-icon name="close-circle-outline" onclick="eliminarEgreso(${egreso.id})"></ion-icon>
+                    <button type="button" class="elemento_eliminar--btn" onclick="eliminarEgreso(${egreso.id})">
+                        <ion-icon name="close-circle-outline"></ion-icon>
                     </button>
                 </div>
             </div>
@@ -115,46 +114,55 @@ const crearEgresoHTML = (egreso) => {
 }
 
 
-/*elimina el ingreso enviado como parámetro*/
 const eliminarIngreso = (id) =>{
     let indice = ingresos.findIndex( ingreso => ingreso.id === id );
-    //for (let ingreso of ingresos)
-    ingresos.splice(indice, 1);
-    cargarCabecero();
-    cargarIngresos();
+    if(indice !== -1){
+        ingresos.splice(indice, 1);
+        cargarCabecero();
+        cargarIngresos();
+    }
 }   
 
 
-/*elimina el egreso enviado como parámetro*/
 const eliminarEgreso = (id) =>{
     let indice = egresos.findIndex( egreso => egreso.id === id );
-    egresos.splice(indice, 1);
-    cargarCabecero();
-    cargarEgresos();
+    if(indice !== -1){
+        egresos.splice(indice, 1);
+        cargarCabecero();
+        cargarEgresos();
+    }
 }   
 
 
-/*agregar elementos nuevos*/
 const agregarDato = () =>{
     let forma = document.forms["forma"];
     let tipo = forma["tipo"];
     let descripcion = forma["descripcion"];
     let valor = forma["valor"];
 
-    console.log(tipo.value);
-    console.log(descripcion.value);
-    console.log(valor.value);
+    let textoDescripcion = descripcion.value.trim();
+    let importe = Number(valor.value);
 
-    if(descripcion.value != "" && valor.value != ""){
-        if(tipo.value == "ingreso"){
-            ingresos.push(new Ingreso(descripcion.value, +valor.value));
-            cargarCabecero();
-            cargarIngresos();
-
-        }else if(tipo.value == "egreso"){
-            egresos.push(new Egreso(descripcion.value, +valor.value));
-            cargarCabecero();
-            cargarEgresos();
-        }
+    if(textoDescripcion == ""){
+        descripcion.focus();
+        return;
     }
+    if(valor.value == "" || !Number.isFinite(importe) || importe <= 0){
+        valor.focus();
+        return;
+    }
+
+    if(tipo.value == "ingreso"){
+        ingresos.push(new Ingreso(textoDescripcion, importe));
+        cargarCabecero();
+        cargarIngresos();
+    }else if(tipo.value == "egreso"){
+        egresos.push(new Egreso(textoDescripcion, importe));
+        cargarCabecero();
+        cargarEgresos();
+    }
+
+    descripcion.value = "";
+    valor.value = "";
+    descripcion.focus();
 }
